@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "412715075381",
+    "project_id": "blackspace-7d9fd",
+    "storage_bucket": "blackspace-7d9fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412715075381:android:43b1cbf258fc6d727e6e7c",
+        "android_client_info": {
+          "package_name": "com.example.blackspace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412715075381-943jignedi38cf20j7n3i99anbs0uh7k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.blackspace",
+            "certificate_hash": "3c2af4dec5932cfed0ef50f545a51b2c7f3f17c7"
+          }
+        },
+        {
+          "client_id": "412715075381-37u9pali73qq0f768ur1focaqgolfv8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvouTtreKAhoOjusEVgKYt5kN2tI0R6xY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412715075381-37u9pali73qq0f768ur1focaqgolfv8o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
