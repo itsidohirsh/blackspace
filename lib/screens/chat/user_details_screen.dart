@@ -55,7 +55,6 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
               color: Theme.of(context).primaryColor,
               child: Text('Send a private message to ${user['username']}'),
               onPressed: () {
-                Navigator.of(context).pop();
                 Navigator.of(context).pushNamed(
                   PrivateChatScreen.routeName,
                   arguments: {'user': arguments['user']},
