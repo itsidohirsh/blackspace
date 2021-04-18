@@ -5,9 +5,14 @@ class DMScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Direct Messages'),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        body: Center(
+          child: Text('Direct Messages'),
+        ),
       ),
     );
   }

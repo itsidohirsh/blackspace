@@ -29,6 +29,11 @@ class Messages extends StatelessWidget {
                   reverse: true,
                   itemCount: chatSnapshot.data.documents.length,
                   itemBuilder: (ctx, i) => InkWell(
+                    // New Fucos node
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    // Message deletion
                     onLongPress: () async {
                       try {
                         await deleteMessage(context, chatDocs, i);
@@ -102,6 +107,7 @@ class Messages extends StatelessWidget {
       onPressed: () {
         isDelete = false;
         Navigator.of(context).pop();
+        FocusScope.of(context).requestFocus(FocusNode());
       },
     );
     Widget continueButton = TextButton(
@@ -112,6 +118,7 @@ class Messages extends StatelessWidget {
       onPressed: () {
         isDelete = true;
         Navigator.of(context).pop();
+        FocusScope.of(context).requestFocus(FocusNode());
       },
     );
 
