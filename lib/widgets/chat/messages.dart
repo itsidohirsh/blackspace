@@ -6,14 +6,22 @@ import '../../screens/splash_screen.dart';
 import '../../screens/chat/user_details_screen.dart';
 import 'message_bubble.dart';
 
-class Messages extends StatelessWidget {
+class Messages extends StatefulWidget {
+  @override
+  _MessagesState createState() => _MessagesState();
+}
+
+class _MessagesState extends State<Messages> {
+  BuildContext _context;
+
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return FutureBuilder(
       future: FirebaseAuth.instance.currentUser(),
       builder: (ctx, futureSnapshot) {
         if (futureSnapshot.connectionState == ConnectionState.waiting) {
-          return SplashScreen();
+          return MyLoadingIndicator();
         } else {
           return StreamBuilder(
             stream: Firestore.instance
@@ -22,7 +30,7 @@ class Messages extends StatelessWidget {
                 .snapshots(),
             builder: (context, chatSnapshot) {
               if (chatSnapshot.connectionState == ConnectionState.waiting) {
-                return SplashScreen();
+                return MyLoadingIndicator();
               } else {
                 final chatDocs = chatSnapshot.data.documents;
                 return ListView.builder(
@@ -31,14 +39,14 @@ class Messages extends StatelessWidget {
                   itemBuilder: (ctx, i) => InkWell(
                     // New Fucos node
                     onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
+                      FocusScope.of(_context).requestFocus(FocusNode());
                     },
                     // Message deletion
                     onLongPress: () async {
                       try {
-                        await deleteMessage(context, chatDocs, i);
+                        await deleteMessage(chatDocs, i);
                       } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        ScaffoldMessenger.of(_context).showSnackBar(
                           SnackBar(
                             content: Text(
                               'Could not complete process, Internet connection error',
@@ -65,11 +73,11 @@ class Messages extends StatelessWidget {
     );
   }
 
-  Future<void> deleteMessage(BuildContext context, chatDocs, i) async {
+  Future<void> deleteMessage(chatDocs, i) async {
     final curUser = await FirebaseAuth.instance.currentUser();
 
     if (curUser.uid == chatDocs[i]['userId']) {
-      bool isDelete = await showAlertDialog(context);
+      bool isDelete = await showAlertDialog();
       if (isDelete) {
         final doc = await Firestore.instance
             .collection('chat')
@@ -83,7 +91,7 @@ class Messages extends StatelessWidget {
         print('deleted message $docID');
       }
     } else {
-      Navigator.of(context).pushNamed(
+      Navigator.of(_context).pushNamed(
         UserDetailsScreen.routeName,
         arguments: {
           'user': await Firestore.instance
@@ -95,30 +103,30 @@ class Messages extends StatelessWidget {
     }
   }
 
-  Future<bool> showAlertDialog(BuildContext context) async {
+  Future<bool> showAlertDialog() async {
     bool isDelete = false;
 
     // set up the buttons
     Widget cancelButton = TextButton(
       child: Text(
         "Cancel",
-        style: TextStyle(color: Theme.of(context).primaryColor),
+        style: TextStyle(color: Theme.of(_context).primaryColor),
       ),
       onPressed: () {
         isDelete = false;
-        Navigator.of(context).pop();
-        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.of(_context).pop();
+        FocusScope.of(_context).requestFocus(FocusNode());
       },
     );
     Widget continueButton = TextButton(
       child: Text(
         "Delete",
-        style: TextStyle(color: Theme.of(context).errorColor),
+        style: TextStyle(color: Theme.of(_context).errorColor),
       ),
       onPressed: () {
         isDelete = true;
-        Navigator.of(context).pop();
-        FocusScope.of(context).requestFocus(FocusNode());
+        Navigator.of(_context).pop();
+        FocusScope.of(_context).requestFocus(FocusNode());
       },
     );
 
@@ -134,8 +142,8 @@ class Messages extends StatelessWidget {
 
     // show the dialog
     await showDialog(
-      context: context,
-      builder: (BuildContext context) {
+      context: _context,
+      builder: (_) {
         return alert;
       },
     );
