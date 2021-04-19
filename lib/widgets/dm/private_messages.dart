@@ -2,16 +2,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../screens/splash_screen.dart';
 import '../../screens/chat/user_details_screen.dart';
-import 'message_bubble.dart';
+import '../../screens/splash_screen.dart';
+import '../chat/message_bubble.dart';
 
-class Messages extends StatefulWidget {
+class PrivateMessages extends StatefulWidget {
+  String chatRoomId;
+  var user;
+
+  PrivateMessages({
+    Key key,
+    @required this.chatRoomId,
+    @required this.user,
+  }) : super(key: key);
+
   @override
-  _MessagesState createState() => _MessagesState();
+  _PrivateMessagesState createState() => _PrivateMessagesState();
 }
 
-class _MessagesState extends State<Messages> {
+class _PrivateMessagesState extends State<PrivateMessages> {
   BuildContext _context;
 
   @override
@@ -25,7 +34,9 @@ class _MessagesState extends State<Messages> {
         } else {
           return StreamBuilder(
             stream: Firestore.instance
-                .collection('chat')
+                .collection('chatRoom')
+                .document(widget.chatRoomId)
+                .collection('chats')
                 .orderBy('createdAt', descending: true)
                 .snapshots(),
             builder: (context, chatSnapshot) {
@@ -80,13 +91,20 @@ class _MessagesState extends State<Messages> {
       bool isDelete = await showAlertDialog();
       if (isDelete) {
         final doc = await Firestore.instance
-            .collection('chat')
+            .collection('chatRoom')
+            .document(widget.chatRoomId)
+            .collection('chats')
             .where('id', isEqualTo: chatDocs[i]['id'])
             .getDocuments();
 
         final docID = doc.documents.first.documentID;
 
-        await Firestore.instance.collection('chat').document(docID).delete();
+        await Firestore.instance
+            .collection('chatRoom')
+            .document(widget.chatRoomId)
+            .collection('chats')
+            .document(docID)
+            .delete();
 
         print('deleted message $docID');
       }

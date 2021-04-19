@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-import '../../widgets/chat/messages.dart';
+import '../../widgets/chat/chat_messages.dart';
 import '../../widgets/chat/new_message.dart';
 import '../dm/dm_screen.dart';
 import '../settings_screen.dart';
@@ -54,7 +54,18 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  SizedBox(height: 100),
+                  Container(
+                    height: 200,
+                    child: Center(
+                      child: Text(
+                        'Hello, Friend',
+                        style: Theme.of(context).textTheme.headline5.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 32,
+                            ),
+                      ),
+                    ),
+                  ),
                   ListTile(
                     leading: Icon(
                       Icons.settings,
@@ -95,7 +106,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: Column(
                   children: [
                     Expanded(
-                      child: Messages(),
+                      child: ChatMessages(),
                     ),
                     NewMessage(),
                   ],

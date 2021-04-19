@@ -99,9 +99,10 @@ class _AuthFormState extends State<AuthForm> {
                       autocorrect: true,
                       textCapitalization: TextCapitalization.words,
                       enableSuggestions: false,
+                      maxLength: 12,
                       validator: (value) {
-                        if (value.isEmpty || value.length < 4) {
-                          return 'Please enter at list 4 characters';
+                        if (value.isEmpty || value.length < 3) {
+                          return 'Please enter at list 3 characters';
                         }
                         return null;
                       },
@@ -115,8 +116,8 @@ class _AuthFormState extends State<AuthForm> {
                   TextFormField(
                     key: ValueKey('password'),
                     validator: (value) {
-                      if (value.isEmpty || value.length < 7) {
-                        return 'Password must be at list 7 characters long';
+                      if (value.isEmpty || value.length < 8) {
+                        return 'Password must be at list 8 characters long';
                       }
                       return null;
                     },
