@@ -1,3 +1,4 @@
+import '../../providers/database.dart';
 import 'package:flutter/material.dart';
 
 import '../dm/private_chat_screen.dart';
@@ -54,10 +55,16 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             RaisedButton(
               color: Theme.of(context).primaryColor,
               child: Text('Send a private message to ${user['username']}'),
-              onPressed: () {
+              onPressed: () async {
+                final myName = await DatabaseMethods().getCurUserName();
+                String chatRoomId = '${myName}_${user['username']}';
+                print(chatRoomId);
                 Navigator.of(context).pushNamed(
                   PrivateChatScreen.routeName,
-                  arguments: {'user': arguments['user']},
+                  arguments: {
+                    'user': arguments['user'],
+                    'chatRoomId': chatRoomId,
+                  },
                 );
               },
             ),

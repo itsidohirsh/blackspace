@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'screens/auth/auth_screen.dart';
 import 'screens/chat/chat_screen.dart';
+import 'screens/chat/user_details_screen.dart';
 import 'screens/dm/private_chat_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
-import 'screens/chat/user_details_screen.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 
