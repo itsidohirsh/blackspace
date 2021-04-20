@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../screens/splash_screen.dart';
-import '../../screens/chat/user_details_screen.dart';
+import '../../screens/chat/user_details_screen_with_button.dart';
 import 'message_bubble.dart';
 
 class ChatMessages extends StatefulWidget {
@@ -92,7 +92,7 @@ class _ChatMessagesState extends State<ChatMessages> {
       }
     } else {
       Navigator.of(_context).pushNamed(
-        UserDetailsScreen.routeName,
+        UserDetailsScreenWithButton.routeName,
         arguments: {
           'user': await Firestore.instance
               .collection('users')

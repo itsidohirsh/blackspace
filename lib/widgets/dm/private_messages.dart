@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../screens/chat/user_details_screen.dart';
+import '../../screens/chat/user_details_screen_with_button.dart';
 import '../../screens/splash_screen.dart';
 import '../chat/message_bubble.dart';
 
@@ -32,49 +32,54 @@ class _PrivateMessagesState extends State<PrivateMessages> {
         if (futureSnapshot.connectionState == ConnectionState.waiting) {
           return MyLoadingIndicator();
         } else {
-          return StreamBuilder(
-            stream: Firestore.instance
-                .collection('chatRoom')
-                .document(widget.chatRoomId)
-                .collection('chats')
-                .orderBy('createdAt', descending: true)
-                .snapshots(),
-            builder: (context, chatSnapshot) {
-              if (chatSnapshot.connectionState == ConnectionState.waiting) {
+          return FutureBuilder(
+            future: messagesStream(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
                 return MyLoadingIndicator();
               } else {
-                final chatDocs = chatSnapshot.data.documents;
-                return ListView.builder(
-                  reverse: true,
-                  itemCount: chatSnapshot.data.documents.length,
-                  itemBuilder: (ctx, i) => InkWell(
-                    // New Fucos node
-                    onTap: () {
-                      FocusScope.of(_context).requestFocus(FocusNode());
-                    },
-                    // Message deletion
-                    onLongPress: () async {
-                      try {
-                        await deleteMessage(chatDocs, i);
-                      } catch (e) {
-                        ScaffoldMessenger.of(_context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Could not complete process, Internet connection error',
-                            ),
+                return StreamBuilder(
+                  stream: snapshot.data,
+                  builder: (context, chatSnapshot) {
+                    if (chatSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return MyLoadingIndicator();
+                    } else {
+                      final chatDocs = chatSnapshot.data.documents;
+                      return ListView.builder(
+                        reverse: true,
+                        itemCount: chatSnapshot.data.documents.length,
+                        itemBuilder: (ctx, i) => InkWell(
+                          // New Fucos node
+                          onTap: () {
+                            FocusScope.of(_context).requestFocus(FocusNode());
+                          },
+                          // Message deletion
+                          onLongPress: () async {
+                            try {
+                              await deleteMessage(chatDocs, i);
+                            } catch (e) {
+                              ScaffoldMessenger.of(_context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Could not complete process, Internet connection error',
+                                  ),
+                                ),
+                              );
+                              print(e);
+                            }
+                          },
+                          child: MessageBubble(
+                            chatDocs[i]['text'],
+                            chatDocs[i]['username'],
+                            chatDocs[i]['userImage'],
+                            chatDocs[i]['userId'] == futureSnapshot.data.uid,
+                            key: ValueKey(chatDocs[i].documentID),
                           ),
-                        );
-                        print(e);
-                      }
-                    },
-                    child: MessageBubble(
-                      chatDocs[i]['text'],
-                      chatDocs[i]['username'],
-                      chatDocs[i]['userImage'],
-                      chatDocs[i]['userId'] == futureSnapshot.data.uid,
-                      key: ValueKey(chatDocs[i].documentID),
-                    ),
-                  ),
+                        ),
+                      );
+                    }
+                  },
                 );
               }
             },
@@ -82,6 +87,37 @@ class _PrivateMessagesState extends State<PrivateMessages> {
         }
       },
     );
+  }
+
+  Future<Stream<QuerySnapshot>> messagesStream() async {
+    String _chatRoomId;
+    String _firstName;
+    String _lastName;
+
+    final doc = await Firestore.instance
+        .collection('chatRoom')
+        .document(widget.chatRoomId)
+        .get();
+
+    if (doc.exists) {
+      return Firestore.instance
+          .collection('chatRoom')
+          .document(widget.chatRoomId)
+          .collection('chats')
+          .orderBy('createdAt', descending: true)
+          .snapshots();
+    } else {
+      _chatRoomId = widget.chatRoomId;
+      _firstName = _chatRoomId.split('_')[0];
+      _lastName = _chatRoomId.split('_')[1];
+      _chatRoomId = '${_lastName}_$_firstName';
+      return Firestore.instance
+          .collection('chatRoom')
+          .document(_chatRoomId)
+          .collection('chats')
+          .orderBy('createdAt', descending: true)
+          .snapshots();
+    }
   }
 
   Future<void> deleteMessage(chatDocs, i) async {
@@ -110,7 +146,7 @@ class _PrivateMessagesState extends State<PrivateMessages> {
       }
     } else {
       Navigator.of(_context).pushNamed(
-        UserDetailsScreen.routeName,
+        UserDetailsScreenWithButton.routeName,
         arguments: {
           'user': await Firestore.instance
               .collection('users')

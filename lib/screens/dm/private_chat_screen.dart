@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/dm/new_private_message.dart';
 import '../../widgets/dm/private_messages.dart';
+import '../chat/user_detail_screen_withOut_button.dart';
 
 class PrivateChatScreen extends StatefulWidget {
   static const routeName = '/private-chat-screen';
@@ -28,9 +29,17 @@ class _PrivateChatScreenState extends State<PrivateChatScreen> {
           children: [
             Text('Message ' + user['username']),
             Spacer(),
-            CircleAvatar(
-              backgroundImage: NetworkImage(user['image_url']),
-              radius: 30,
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  UserDetailsScreenWithOutButton.routeName,
+                  arguments: {'user': user},
+                );
+              },
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(user['image_url']),
+                radius: 30,
+              ),
             ),
           ],
         ),
