@@ -22,7 +22,14 @@ class _UserImagePickerState extends State<UserImagePicker> {
       imageQuality: 50,
       maxWidth: 150,
     );
-    final pickedImageFile = File(pickedImage.path);
+    var pickedImageFile;
+
+    try {
+      pickedImageFile = File(pickedImage.path);
+    } catch (error) {
+      print(error);
+    }
+
     setState(() {
       _pickedImage = pickedImageFile;
     });

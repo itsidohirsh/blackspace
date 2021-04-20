@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../providers/database.dart';
 import '../../widgets/dm/chat_room_tile.dart';
+import '../../widgets/my_loading_indicator.dart';
 
 class DMScreen extends StatefulWidget {
   @override
@@ -21,18 +22,33 @@ class _DMScreenState extends State<DMScreen> {
                 itemCount: snapshot.data.documents.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return ChatRoomsTile(
-                    userName: snapshot.data.documents[index].data['chatRoomId']
-                        .toString()
-                        .replaceAll("_", "")
-                        .replaceAll(myName, ""),
-                    chatRoomId:
-                        snapshot.data.documents[index].data["chatRoomId"],
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      right: 10,
+                      left: 10,
+                      bottom: 0,
+                    ),
+                    child: Column(
+                      children: [
+                        ChatRoomsTile(
+                          userName: snapshot
+                              .data.documents[index].data['chatRoomId']
+                              .toString()
+                              .replaceAll("_", "")
+                              .replaceAll(myName, ""),
+                          chatRoomId:
+                              snapshot.data.documents[index].data["chatRoomId"],
+                        ),
+                        Divider(
+                          thickness: 0.5,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
                   );
                 })
-            : Center(
-                child: CircularProgressIndicator(),
-              );
+            : MyLoadingIndicator();
       },
     );
   }
@@ -52,10 +68,6 @@ class _DMScreenState extends State<DMScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: chatRoomsList(),
-      ),
-    );
+    return chatRoomsList();
   }
 }

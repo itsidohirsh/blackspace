@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../screens/splash_screen.dart';
+import '../my_loading_indicator.dart';
 import '../../screens/chat/user_details_screen_with_button.dart';
 import 'message_bubble.dart';
 
