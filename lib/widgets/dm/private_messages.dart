@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../screens/chat/user_details_screen_with_button.dart';
-import '../../screens/splash_screen.dart';
+import '../../screens/chat/user_detail_screen_withOut_button.dart';
 import '../chat/message_bubble.dart';
+import '../my_loading_indicator.dart';
 
 class PrivateMessages extends StatefulWidget {
   String chatRoomId;
@@ -146,7 +146,7 @@ class _PrivateMessagesState extends State<PrivateMessages> {
       }
     } else {
       Navigator.of(_context).pushNamed(
-        UserDetailsScreenWithButton.routeName,
+        UserDetailsScreenWithOutButton.routeName,
         arguments: {
           'user': await Firestore.instance
               .collection('users')

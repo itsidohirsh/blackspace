@@ -38,10 +38,10 @@ class _NewPrivateMessageState extends State<NewPrivateMessage> {
       // If Chat room doesn't exist
       await Firestore.instance
           .collection('chatRoom')
-          .document(widget.chatRoomId)
+          .document(_chatRoomId)
           .setData(
         {
-          'chatRoomId': widget.chatRoomId,
+          'chatRoomId': _chatRoomId,
           'users': [
             userData['username'],
             widget.user['username'],
