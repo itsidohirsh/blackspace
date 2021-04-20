@@ -1,18 +1,17 @@
-import '../../providers/database.dart';
 import 'package:flutter/material.dart';
 
-import '../dm/private_chat_screen.dart';
+class UserDetailsScreenWithOutButton extends StatefulWidget {
+  static const routeName = '/user-details-screen-withOut-button';
 
-class UserDetailsScreen extends StatefulWidget {
-  static const routeName = '/user-details-screen';
-
-  const UserDetailsScreen({Key key}) : super(key: key);
+  const UserDetailsScreenWithOutButton({Key key}) : super(key: key);
 
   @override
-  _UserDetailsScreenState createState() => _UserDetailsScreenState();
+  _UserDetailsScreenWithOutButtonState createState() =>
+      _UserDetailsScreenWithOutButtonState();
 }
 
-class _UserDetailsScreenState extends State<UserDetailsScreen> {
+class _UserDetailsScreenWithOutButtonState
+    extends State<UserDetailsScreenWithOutButton> {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> arguments = ModalRoute.of(context).settings.arguments;
@@ -36,7 +35,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             CircleAvatar(
-              radius: 75,
+              radius: 125,
               backgroundImage: NetworkImage(user['image_url']),
             ),
             Column(
@@ -51,22 +50,6 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                 SizedBox(height: 10),
                 Text(user['email']),
               ],
-            ),
-            RaisedButton(
-              color: Theme.of(context).primaryColor,
-              child: Text('Send a private message to ${user['username']}'),
-              onPressed: () async {
-                final myName = await DatabaseMethods().getCurUserName();
-                String chatRoomId = '${myName}_${user['username']}';
-                print(chatRoomId);
-                Navigator.of(context).pushNamed(
-                  PrivateChatScreen.routeName,
-                  arguments: {
-                    'user': arguments['user'],
-                    'chatRoomId': chatRoomId,
-                  },
-                );
-              },
             ),
           ],
         ),

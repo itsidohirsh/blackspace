@@ -27,20 +27,32 @@ class _NewPrivateMessageState extends State<NewPrivateMessage> {
     final userData =
         await Firestore.instance.collection('users').document(user.uid).get();
 
-    await Firestore.instance
+    String _chatRoomId = await checkChatRoomId();
+
+    final doc = await Firestore.instance
         .collection('chatRoom')
-        .document(widget.chatRoomId)
-        .setData({
-      'chatRoomId': widget.chatRoomId,
-      'users': [
-        userData['username'],
-        widget.user['username'],
-      ],
-    });
+        .document(_chatRoomId)
+        .get();
+
+    if (!doc.exists) {
+      // If Chat room doesn't exist
+      await Firestore.instance
+          .collection('chatRoom')
+          .document(widget.chatRoomId)
+          .setData(
+        {
+          'chatRoomId': widget.chatRoomId,
+          'users': [
+            userData['username'],
+            widget.user['username'],
+          ],
+        },
+      );
+    }
 
     await Firestore.instance
         .collection('chatRoom')
-        .document(widget.chatRoomId)
+        .document(_chatRoomId)
         .collection('chats')
         .add(
       {
@@ -57,6 +69,27 @@ class _NewPrivateMessageState extends State<NewPrivateMessage> {
     setState(() {
       _enteredMessage = '';
     });
+  }
+
+  Future<String> checkChatRoomId() async {
+    String _chatRoomId;
+    String _firstName;
+    String _lastName;
+
+    final doc = await Firestore.instance
+        .collection('chatRoom')
+        .document(widget.chatRoomId)
+        .get();
+
+    if (doc.exists) {
+      return widget.chatRoomId;
+    } else {
+      _chatRoomId = widget.chatRoomId;
+      _firstName = _chatRoomId.split('_')[0];
+      _lastName = _chatRoomId.split('_')[1];
+      _chatRoomId = '${_lastName}_$_firstName';
+      return _chatRoomId;
+    }
   }
 
   @override

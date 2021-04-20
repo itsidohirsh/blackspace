@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'screens/auth/auth_screen.dart';
 import 'screens/chat/chat_screen.dart';
-import 'screens/chat/user_details_screen.dart';
+import 'screens/chat/user_detail_screen_withOut_button.dart';
+import 'screens/chat/user_details_screen_with_button.dart';
 import 'screens/dm/private_chat_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
@@ -43,7 +44,10 @@ class MyApp extends StatelessWidget {
         },
       ),
       routes: {
-        UserDetailsScreen.routeName: (ctx) => UserDetailsScreen(),
+        UserDetailsScreenWithButton.routeName: (ctx) =>
+            UserDetailsScreenWithButton(),
+        UserDetailsScreenWithOutButton.routeName: (ctx) =>
+            UserDetailsScreenWithOutButton(),
         ChatScreen.routeName: (ctx) => ChatScreen(),
         SettingsScreen.routeName: (ctx) => SettingsScreen(),
         AuthScreen.routeName: (ctx) => AuthScreen(),
