@@ -110,7 +110,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 title: Text(
-                                  'settings',
+                                  'Settings',
                                   style: Theme.of(context).textTheme.headline6,
                                 ),
                                 onTap: () {
