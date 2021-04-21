@@ -73,6 +73,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     CircleAvatar(
+                                      backgroundColor: Colors.grey,
                                       backgroundImage: NetworkImage(
                                         userSnapshot.data['image_url'],
                                       ),
