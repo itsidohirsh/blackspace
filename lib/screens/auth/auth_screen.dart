@@ -85,6 +85,9 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        brightness: Brightness.dark,
+      ),
       backgroundColor: Theme.of(context).primaryColor,
       body: AuthForm(
         _submitAuthForm,
