@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'screens/auth/auth_screen.dart';
 import 'screens/chat/chat_screen.dart';
@@ -9,13 +10,16 @@ import 'screens/dm/private_chat_screen.dart';
 import 'screens/settings_screen.dart';
 import 'widgets/my_loading_indicator.dart';
 
-void main() async {
+void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Blackspace',

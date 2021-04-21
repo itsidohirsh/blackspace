@@ -19,6 +19,7 @@ class _UserDetailsScreenWithOutButtonState
 
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.dark,
         title: Text("${user['username']}'s details"),
         leading: IconButton(
           icon: Icon(
