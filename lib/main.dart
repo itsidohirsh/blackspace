@@ -8,7 +8,7 @@ import 'screens/chat/user_detail_screen_withOut_button.dart';
 import 'screens/chat/user_details_screen_with_button.dart';
 import 'screens/dm/private_chat_screen.dart';
 import 'screens/settings_screen.dart';
-import 'widgets/my_loading_indicator.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (ctx, userSnapshot) {
           if (userSnapshot.connectionState == ConnectionState.waiting) {
-            return MyLoadingIndicator();
+            return SplashScreen();
           }
           if (userSnapshot.hasData) {
             return ChatScreen();
