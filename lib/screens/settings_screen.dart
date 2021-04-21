@@ -29,16 +29,34 @@ class SettingsScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'To delete a message you sent, long press on your message.',
-                textAlign: TextAlign.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Delete a message\n',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Text(
+                    'To delete a message you sent, long press on your message.',
+                    textAlign: TextAlign.left,
+                  ),
+                ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'To see more details about a user, long press on a message they have sent.',
-                textAlign: TextAlign.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Contact a user\n',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Text(
+                    'To see more details about a user, long press on a message they have sent.\n\nFrom there you can send them a message.',
+                    textAlign: TextAlign.left,
+                  ),
+                ],
               ),
             ),
             RaisedButton(
