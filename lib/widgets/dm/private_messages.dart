@@ -7,8 +7,8 @@ import '../chat/message_bubble.dart';
 import '../my_loading_indicator.dart';
 
 class PrivateMessages extends StatefulWidget {
-  String chatRoomId;
-  var user;
+  final String chatRoomId;
+  final user;
 
   PrivateMessages({
     Key key,

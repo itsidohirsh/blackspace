@@ -55,22 +55,32 @@ class _ChatScreenState extends State<ChatScreen> {
                   onTap: () {
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
-                  child: ListView(
-                    padding: EdgeInsets.zero,
+                  child: Column(
                     children: <Widget>[
-                      Container(
-                        height: 200,
-                        child: Center(
-                          child: Text(
-                            'Hello, ${snapshot.data}',
-                            style:
-                                Theme.of(context).textTheme.headline5.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 32,
-                                    ),
-                          ),
+                      SizedBox(height: 100),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${snapshot.data}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 32,
+                                  ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Welcom to Blackspace'),
+                            ),
+                          ],
                         ),
                       ),
+                      SizedBox(height: 20),
+                      Divider(),
                       ListTile(
                         leading: Icon(
                           Icons.settings,
@@ -86,11 +96,13 @@ class _ChatScreenState extends State<ChatScreen> {
                               .pushNamed(SettingsScreen.routeName);
                         },
                       ),
+                      Divider(),
                     ],
                   ),
                 ),
               ),
               appBar: AppBar(
+                brightness: Brightness.dark,
                 title: _curIndex == 0 ? Text('Chat') : Text('Direct Messages'),
                 centerTitle: true,
                 bottom: TabBar(
@@ -115,6 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: ChatMessages(),
                         ),
                         NewMessage(),
+                        SizedBox(height: 15),
                       ],
                     ),
                   ),

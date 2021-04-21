@@ -24,6 +24,7 @@ class _PrivateChatScreenState extends State<PrivateChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.dark,
         toolbarHeight: 75,
         title: Row(
           children: [
@@ -58,6 +59,7 @@ class _PrivateChatScreenState extends State<PrivateChatScreen> {
               chatRoomId: chatRoomId,
               user: user,
             ),
+            SizedBox(height: 15),
           ],
         ),
       ),
