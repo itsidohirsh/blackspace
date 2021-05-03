@@ -62,7 +62,7 @@ class _UserDetailsScreenWithButtonState
                 final myName = await DatabaseMethods().getCurUserName();
                 final otherUser = arguments['user'];
                 String chatRoomId = '${myName}_${user['username']}';
-                Navigator.of(context).pushNamed(
+                Navigator.of(context).popAndPushNamed(
                   PrivateChatScreen.routeName,
                   arguments: {
                     'user': otherUser,

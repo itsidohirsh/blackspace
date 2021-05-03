@@ -103,6 +103,8 @@ class _AuthFormState extends State<AuthForm> {
                       validator: (value) {
                         if (value.isEmpty || value.length < 3) {
                           return 'Please enter at list 3 characters';
+                        } else if (value.contains('_')) {
+                          return 'Usesrname cant\'t contain _';
                         }
                         return null;
                       },
