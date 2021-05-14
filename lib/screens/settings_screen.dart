@@ -12,7 +12,8 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings Screen'),
+        centerTitle: true,
+        title: Text('Settings'),
         leading: IconButton(
           icon: Icon(
             Icons.close,
