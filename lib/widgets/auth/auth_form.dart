@@ -27,6 +27,7 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _username = '';
   var _userPassword = '';
+  var _userValidatePassword = '';
   File _userImageFile;
 
   void _pickedImage(File image) {
@@ -126,11 +127,33 @@ class _AuthFormState extends State<AuthForm> {
                     decoration: InputDecoration(
                       labelText: 'Password',
                     ),
+                    onChanged: (value) {
+                      _userPassword = value;
+                    },
                     onSaved: (value) {
                       _userPassword = value;
                     },
                     obscureText: true,
                   ),
+                  if (!_isLogin)
+                    TextFormField(
+                      key: ValueKey('validate password'),
+                      validator: (value) {
+                        if (value.isEmpty ||
+                            value.length < 8 ||
+                            value != _userPassword) {
+                          return 'Passwords must be the same';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Validate password',
+                      ),
+                      onSaved: (value) {
+                        _userValidatePassword = value;
+                      },
+                      obscureText: true,
+                    ),
                   SizedBox(
                     height: 12,
                   ),
