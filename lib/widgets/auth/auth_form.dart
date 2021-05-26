@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -165,20 +166,21 @@ class _AuthFormState extends State<AuthForm> {
                       ),
                       onPressed: _trySubmit,
                     ),
-                  if (!widget.isLoading)
-                    FlatButton(
-                      textColor: Theme.of(context).primaryColor,
-                      child: Text(
-                        _isLogin
-                            ? 'Create new account'
-                            : 'I already have an account',
+                  if (!kIsWeb)
+                    if (!widget.isLoading)
+                      FlatButton(
+                        textColor: Theme.of(context).primaryColor,
+                        child: Text(
+                          _isLogin
+                              ? 'Create new account'
+                              : 'I already have an account',
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isLogin = !_isLogin;
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _isLogin = !_isLogin;
-                        });
-                      },
-                    ),
                 ],
               ),
             ),
