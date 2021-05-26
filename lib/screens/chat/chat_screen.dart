@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '../../providers/database.dart';
@@ -16,26 +15,27 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  @override
-  void initState() {
-    super.initState();
-    final fbm = FirebaseMessaging();
-    fbm.requestNotificationPermissions();
-    fbm.configure(
-      onMessage: (msg) {
-        print(msg);
-        return;
-      },
-      onLaunch: (msg) {
-        print(msg);
-        return;
-      },
-      onResume: (msg) {
-        print(msg);
-        return;
-      },
-    );
-  }
+  // Push notification
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   final fbm = FirebaseMessaging();
+  //   fbm.requestNotificationPermissions();
+  //   fbm.configure(
+  //     onMessage: (msg) {
+  //       print(msg);
+  //       return;
+  //     },
+  //     onLaunch: (msg) {
+  //       print(msg);
+  //       return;
+  //     },
+  //     onResume: (msg) {
+  //       print(msg);
+  //       return;
+  //     },
+  //   );
+  // }
 
   int _curIndex = 0;
 

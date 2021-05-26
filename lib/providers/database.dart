@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class DatabaseMethods {
   // Returns the current connected user, user id
   Future<String> getCurUserUid() async {
-    final user = await FirebaseAuth.instance.currentUser();
+    final user = await FirebaseAuth.instance.currentUser;
     return user.uid;
   }
 
@@ -12,32 +12,35 @@ class DatabaseMethods {
   Future<String> getCurUserName() async {
     final uid = await getCurUserUid();
     final doc =
-        await Firestore.instance.collection('users').document(uid).get();
-    return doc.data['username'];
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    return doc.data()['username'];
   }
 
   // Adds user information to the user in the users collection in the db
   Future<void> addUserInfo(userData) async {
-    Firestore.instance.collection("users").add(userData).catchError((e) {
+    FirebaseFirestore.instance
+        .collection("users")
+        .add(userData)
+        .catchError((e) {
       print(e.toString());
     });
   }
 
   // Returns the info of a user by its username
   Future<Map<String, dynamic>> getUserInfo(String username) async {
-    final userDoc = await Firestore.instance
+    final userDoc = await FirebaseFirestore.instance
         .collection('users')
         .where('username', isEqualTo: username)
-        .getDocuments();
-    return userDoc.documents.single.data;
+        .get();
+    return userDoc.docs.single.data();
   }
 
   // Creats a new chat room for a private chat two users have started
   Future<void> addChatRoom(chatRoom, chatRoomId) async {
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection("chatRoom")
-        .document(chatRoomId)
-        .setData(chatRoom)
+        .doc(chatRoomId)
+        .set(chatRoom)
         .catchError((e) {
       print(e);
     });
@@ -45,9 +48,9 @@ class DatabaseMethods {
 
   // Returns the chat messages of a current chat room by its room id
   getChats(String chatRoomId) async {
-    return Firestore.instance
+    return FirebaseFirestore.instance
         .collection("chatRoom")
-        .document(chatRoomId)
+        .doc(chatRoomId)
         .collection("chats")
         .orderBy('time')
         .snapshots();
@@ -55,9 +58,9 @@ class DatabaseMethods {
 
   // Adds a message to a certein chat room
   Future<void> addMessage(String chatRoomId, chatMessageData) async {
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection("chatRoom")
-        .document(chatRoomId)
+        .doc(chatRoomId)
         .collection("chats")
         .add(chatMessageData)
         .catchError((e) {
@@ -66,8 +69,8 @@ class DatabaseMethods {
   }
 
   // Returns all the current user private chats
-  Stream<QuerySnapshot> getUserChats(String itIsMyName) {
-    return Firestore.instance
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserChats(String itIsMyName) {
+    return FirebaseFirestore.instance
         .collection("chatRoom")
         .where('users', arrayContains: itIsMyName)
         .snapshots();

@@ -18,13 +18,13 @@ class _ChatMessagesState extends State<ChatMessages> {
   Widget build(BuildContext context) {
     _context = context;
     return FutureBuilder(
-      future: FirebaseAuth.instance.currentUser(),
+      future: Future(() => FirebaseAuth.instance.currentUser),
       builder: (ctx, futureSnapshot) {
         if (futureSnapshot.connectionState == ConnectionState.waiting) {
           return MyLoadingIndicator();
         } else {
           return StreamBuilder(
-            stream: Firestore.instance
+            stream: FirebaseFirestore.instance
                 .collection('chat')
                 .orderBy('createdAt', descending: true)
                 .snapshots(),
@@ -32,10 +32,11 @@ class _ChatMessagesState extends State<ChatMessages> {
               if (chatSnapshot.connectionState == ConnectionState.waiting) {
                 return MyLoadingIndicator();
               } else {
-                final chatDocs = chatSnapshot.data.documents;
+                final QuerySnapshot<Map<String, dynamic>> chatDocs =
+                    chatSnapshot.data;
                 return ListView.builder(
                   reverse: true,
-                  itemCount: chatSnapshot.data.documents.length,
+                  itemCount: chatDocs.docs.length,
                   itemBuilder: (ctx, i) => InkWell(
                     // New Fucos node
                     onTap: () {
@@ -57,11 +58,11 @@ class _ChatMessagesState extends State<ChatMessages> {
                       }
                     },
                     child: MessageBubble(
-                      chatDocs[i]['text'],
-                      chatDocs[i]['username'],
-                      chatDocs[i]['userImage'],
-                      chatDocs[i]['userId'] == futureSnapshot.data.uid,
-                      key: ValueKey(chatDocs[i].documentID),
+                      chatDocs.docs[i]['text'],
+                      chatDocs.docs[i]['username'],
+                      chatDocs.docs[i]['userImage'],
+                      chatDocs.docs[i]['userId'] == futureSnapshot.data.uid,
+                      key: ValueKey(chatDocs.docs[i].id),
                     ),
                   ),
                 );
@@ -73,30 +74,33 @@ class _ChatMessagesState extends State<ChatMessages> {
     );
   }
 
-  Future<void> deleteMessage(chatDocs, i) async {
-    final curUser = await FirebaseAuth.instance.currentUser();
+  Future<void> deleteMessage(
+      QuerySnapshot<Map<String, dynamic>> chatDocs, i) async {
+    final curUser = await FirebaseAuth.instance.currentUser;
 
-    if (curUser.uid == chatDocs[i]['userId']) {
+    if (curUser.uid == chatDocs.docs[i]['userId']) {
       bool isDelete = await showAlertDialog();
       if (isDelete) {
-        final doc = await Firestore.instance
+        final doc = await FirebaseFirestore.instance
             .collection('chat')
-            .where('id', isEqualTo: chatDocs[i]['id'])
-            .getDocuments();
+            .where('id', isEqualTo: chatDocs.docs[i]['id'])
+            .get();
 
-        final docID = doc.documents.first.documentID;
+        final docID = doc.docs.first.id;
 
-        await Firestore.instance.collection('chat').document(docID).delete();
+        await FirebaseFirestore.instance.collection('chat').doc(docID).delete();
 
         print('deleted message $docID');
+      } else {
+        print('Deletion cancled');
       }
     } else {
       Navigator.of(_context).pushNamed(
         UserDetailsScreenWithButton.routeName,
         arguments: {
-          'user': await Firestore.instance
+          'user': await FirebaseFirestore.instance
               .collection('users')
-              .document(chatDocs[i]['userId'])
+              .doc(chatDocs.docs[i]['userId'])
               .get(),
         },
       );

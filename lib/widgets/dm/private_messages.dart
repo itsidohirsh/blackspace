@@ -27,7 +27,7 @@ class _PrivateMessagesState extends State<PrivateMessages> {
   Widget build(BuildContext context) {
     _context = context;
     return FutureBuilder(
-      future: FirebaseAuth.instance.currentUser(),
+      future: Future(() => FirebaseAuth.instance.currentUser),
       builder: (ctx, futureSnapshot) {
         if (futureSnapshot.connectionState == ConnectionState.waiting) {
           return MyLoadingIndicator();
@@ -45,10 +45,11 @@ class _PrivateMessagesState extends State<PrivateMessages> {
                         ConnectionState.waiting) {
                       return MyLoadingIndicator();
                     } else {
-                      final chatDocs = chatSnapshot.data.documents;
+                      final QuerySnapshot<Map<String, dynamic>> chatDocs =
+                          chatSnapshot.data;
                       return ListView.builder(
                         reverse: true,
-                        itemCount: chatSnapshot.data.documents.length,
+                        itemCount: chatDocs.docs.length,
                         itemBuilder: (ctx, i) => InkWell(
                           // New Fucos node
                           onTap: () {
@@ -57,7 +58,7 @@ class _PrivateMessagesState extends State<PrivateMessages> {
                           // Message deletion
                           onLongPress: () async {
                             try {
-                              await deleteMessage(chatDocs, i);
+                              await deleteMessage(chatDocs.docs, i);
                             } catch (e) {
                               ScaffoldMessenger.of(_context).showSnackBar(
                                 SnackBar(
@@ -70,11 +71,12 @@ class _PrivateMessagesState extends State<PrivateMessages> {
                             }
                           },
                           child: MessageBubble(
-                            chatDocs[i]['text'],
-                            chatDocs[i]['username'],
-                            chatDocs[i]['userImage'],
-                            chatDocs[i]['userId'] == futureSnapshot.data.uid,
-                            key: ValueKey(chatDocs[i].documentID),
+                            chatDocs.docs[i]['text'],
+                            chatDocs.docs[i]['username'],
+                            chatDocs.docs[i]['userImage'],
+                            chatDocs.docs[i]['userId'] ==
+                                futureSnapshot.data.uid,
+                            key: ValueKey(chatDocs.docs[i].id),
                           ),
                         ),
                       );
@@ -94,15 +96,15 @@ class _PrivateMessagesState extends State<PrivateMessages> {
     String _firstName;
     String _lastName;
 
-    final doc = await Firestore.instance
+    final doc = await FirebaseFirestore.instance
         .collection('chatRoom')
-        .document(widget.chatRoomId)
+        .doc(widget.chatRoomId)
         .get();
 
     if (doc.exists) {
-      return Firestore.instance
+      return FirebaseFirestore.instance
           .collection('chatRoom')
-          .document(widget.chatRoomId)
+          .doc(widget.chatRoomId)
           .collection('chats')
           .orderBy('createdAt', descending: true)
           .snapshots();
@@ -111,46 +113,51 @@ class _PrivateMessagesState extends State<PrivateMessages> {
       _firstName = _chatRoomId.split('_')[0];
       _lastName = _chatRoomId.split('_')[1];
       _chatRoomId = '${_lastName}_$_firstName';
-      return Firestore.instance
+      return FirebaseFirestore.instance
           .collection('chatRoom')
-          .document(_chatRoomId)
+          .doc(_chatRoomId)
           .collection('chats')
           .orderBy('createdAt', descending: true)
           .snapshots();
     }
   }
 
-  Future<void> deleteMessage(chatDocs, i) async {
-    final curUser = await FirebaseAuth.instance.currentUser();
+  Future<void> deleteMessage(
+      List<QueryDocumentSnapshot<Map<String, dynamic>>> chatDocs, i) async {
+    final curUser = FirebaseAuth.instance.currentUser;
 
     if (curUser.uid == chatDocs[i]['userId']) {
       bool isDelete = await showAlertDialog();
       if (isDelete) {
-        final doc = await Firestore.instance
+        print('Trying to delete message...');
+
+        final doc = await FirebaseFirestore.instance
             .collection('chatRoom')
-            .document(widget.chatRoomId)
+            .doc(widget.chatRoomId)
             .collection('chats')
             .where('id', isEqualTo: chatDocs[i]['id'])
-            .getDocuments();
+            .get();
 
-        final docID = doc.documents.first.documentID;
+        final docID = doc.docs.first.id;
 
-        await Firestore.instance
+        await FirebaseFirestore.instance
             .collection('chatRoom')
-            .document(widget.chatRoomId)
+            .doc(widget.chatRoomId)
             .collection('chats')
-            .document(docID)
+            .doc(docID)
             .delete();
 
-        print('deleted message $docID');
+        print('Deleted message $docID');
+      } else {
+        print('Deletion cancled');
       }
     } else {
       Navigator.of(_context).pushNamed(
         UserDetailsScreenWithOutButton.routeName,
         arguments: {
-          'user': await Firestore.instance
+          'user': await FirebaseFirestore.instance
               .collection('users')
-              .document(chatDocs[i]['userId'])
+              .doc(chatDocs[i]['userId'])
               .get(),
         },
       );
