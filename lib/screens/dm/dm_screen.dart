@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../providers/database.dart';
@@ -10,16 +11,17 @@ class DMScreen extends StatefulWidget {
 }
 
 class _DMScreenState extends State<DMScreen> {
-  Stream chatRooms;
+  Stream<QuerySnapshot<Map<String, dynamic>>> chatRooms;
   String myName;
 
   Widget chatRoomsList() {
     return StreamBuilder(
       stream: chatRooms,
       builder: (context, snapshot) {
+        final QuerySnapshot<Map<String, dynamic>> chatDocs = snapshot.data;
         return snapshot.hasData
             ? ListView.builder(
-                itemCount: snapshot.data.documents.length,
+                itemCount: chatDocs.docs.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Padding(
@@ -32,13 +34,12 @@ class _DMScreenState extends State<DMScreen> {
                     child: Column(
                       children: [
                         ChatRoomsTile(
-                          userName: snapshot
-                              .data.documents[index].data['chatRoomId']
+                          userName: chatDocs.docs[index]
+                              .data()['chatRoomId']
                               .toString()
                               .replaceAll("_", "")
                               .replaceAll(myName, ""),
-                          chatRoomId:
-                              snapshot.data.documents[index].data["chatRoomId"],
+                          chatRoomId: chatDocs.docs[index].data()["chatRoomId"],
                         ),
                         Divider(
                           thickness: 0.5,

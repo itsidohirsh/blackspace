@@ -23,23 +23,25 @@ class _NewPrivateMessageState extends State<NewPrivateMessage> {
   void _sendMessage() async {
     FocusScope.of(context).unfocus();
 
-    final user = await FirebaseAuth.instance.currentUser();
-    final userData =
-        await Firestore.instance.collection('users').document(user.uid).get();
+    final user = await FirebaseAuth.instance.currentUser;
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
 
     String _chatRoomId = await checkChatRoomId();
 
-    final doc = await Firestore.instance
+    final doc = await FirebaseFirestore.instance
         .collection('chatRoom')
-        .document(_chatRoomId)
+        .doc(_chatRoomId)
         .get();
 
     if (!doc.exists) {
       // If Chat room doesn't exist
-      await Firestore.instance
+      await FirebaseFirestore.instance
           .collection('chatRoom')
-          .document(_chatRoomId)
-          .setData(
+          .doc(_chatRoomId)
+          .set(
         {
           'chatRoomId': _chatRoomId,
           'users': [
@@ -50,9 +52,9 @@ class _NewPrivateMessageState extends State<NewPrivateMessage> {
       );
     }
 
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection('chatRoom')
-        .document(_chatRoomId)
+        .doc(_chatRoomId)
         .collection('chats')
         .add(
       {
@@ -76,9 +78,9 @@ class _NewPrivateMessageState extends State<NewPrivateMessage> {
     String _firstName;
     String _lastName;
 
-    final doc = await Firestore.instance
+    final doc = await FirebaseFirestore.instance
         .collection('chatRoom')
-        .document(widget.chatRoomId)
+        .doc(widget.chatRoomId)
         .get();
 
     if (doc.exists) {
