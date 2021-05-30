@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../providers/database.dart';
 import '../../widgets/chat/chat_messages.dart';
 import '../../widgets/chat/new_message.dart';
-import '../dm/dm_screen.dart';
 import '../Information_screen.dart';
+import '../dm/dm_screen.dart';
 import '../splash_screen.dart';
 
 class ChatScreen extends StatefulWidget {

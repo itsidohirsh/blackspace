@@ -1,9 +1,8 @@
-import '../my_loading_indicator.dart';
-
-import '../../providers/database.dart';
 import 'package:flutter/material.dart';
 
+import '../../providers/database.dart';
 import '../../screens/dm/private_chat_screen.dart';
+import '../my_loading_indicator.dart';
 
 class ChatRoomsTile extends StatefulWidget {
   final String userName;

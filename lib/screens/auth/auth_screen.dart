@@ -84,14 +84,19 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.dark,
-      ),
-      backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(
-        _submitAuthForm,
-        _isLoading,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          brightness: Brightness.dark,
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+        body: AuthForm(
+          _submitAuthForm,
+          _isLoading,
+        ),
       ),
     );
   }
