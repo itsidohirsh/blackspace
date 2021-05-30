@@ -61,6 +61,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             RaisedButton(
+              color: Theme.of(context).primaryColor,
               child: Text('Sign Out'),
               onPressed: () async {
                 await signOut(context);

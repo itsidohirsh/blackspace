@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class NewMessage extends StatefulWidget {
   @override
@@ -63,9 +63,11 @@ class _NewMessageState extends State<NewMessage> {
                       textCapitalization: TextCapitalization.sentences,
                       autocorrect: true,
                       enableSuggestions: true,
+                      cursorColor: Theme.of(context).primaryColor,
                       decoration: InputDecoration(
-                          hintText: 'Send message...',
-                          border: InputBorder.none),
+                        hintText: 'Send message...',
+                        border: InputBorder.none,
+                      ),
                       onChanged: (value) {
                         setState(() {
                           _enteredMessage = value;

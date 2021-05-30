@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../my_loading_indicator.dart';
 import '../pickers/user_image_picker.dart';
 
 class AuthForm extends StatefulWidget {
@@ -88,8 +89,18 @@ class _AuthFormState extends State<AuthForm> {
                       return null;
                     },
                     keyboardType: TextInputType.emailAddress,
+                    cursorColor: Theme.of(context).primaryColor,
                     decoration: InputDecoration(
                       labelText: 'Email address',
+                      labelStyle: TextStyle(
+                        color: Theme.of(context).primaryColor.withOpacity(0.70),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.70),
+                        ),
+                      ),
                     ),
                     onSaved: (value) {
                       _userEmail = value;
@@ -110,8 +121,20 @@ class _AuthFormState extends State<AuthForm> {
                         }
                         return null;
                       },
+                      cursorColor: Theme.of(context).primaryColor,
                       decoration: InputDecoration(
                         labelText: 'Username',
+                        labelStyle: TextStyle(
+                            color: Theme.of(context)
+                                .primaryColor
+                                .withOpacity(0.70)),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context)
+                                .primaryColor
+                                .withOpacity(0.70),
+                          ),
+                        ),
                       ),
                       onSaved: (value) {
                         _username = value;
@@ -125,8 +148,18 @@ class _AuthFormState extends State<AuthForm> {
                       }
                       return null;
                     },
+                    cursorColor: Theme.of(context).primaryColor,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      labelStyle: TextStyle(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.70)),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.70),
+                        ),
+                      ),
                     ),
                     onChanged: (value) {
                       _userPassword = value;
@@ -147,8 +180,20 @@ class _AuthFormState extends State<AuthForm> {
                         }
                         return null;
                       },
+                      cursorColor: Theme.of(context).primaryColor,
                       decoration: InputDecoration(
                         labelText: 'Validate password',
+                        labelStyle: TextStyle(
+                            color: Theme.of(context)
+                                .primaryColor
+                                .withOpacity(0.70)),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context)
+                                .primaryColor
+                                .withOpacity(0.70),
+                          ),
+                        ),
                       ),
                       onSaved: (value) {
                         _userValidatePassword = value;
@@ -158,9 +203,10 @@ class _AuthFormState extends State<AuthForm> {
                   SizedBox(
                     height: 12,
                   ),
-                  if (widget.isLoading) CircularProgressIndicator(),
+                  if (widget.isLoading) MyLoadingIndicator(),
                   if (!widget.isLoading)
                     RaisedButton(
+                      color: Theme.of(context).primaryColor,
                       child: Text(
                         _isLogin ? 'Login' : 'Sign Up',
                       ),
@@ -169,7 +215,8 @@ class _AuthFormState extends State<AuthForm> {
                   if (!kIsWeb)
                     if (!widget.isLoading)
                       FlatButton(
-                        textColor: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryColor.withOpacity(0.75),
                         child: Text(
                           _isLogin
                               ? 'Create new account'

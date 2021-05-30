@@ -120,9 +120,11 @@ class _NewPrivateMessageState extends State<NewPrivateMessage> {
                       textCapitalization: TextCapitalization.sentences,
                       autocorrect: true,
                       enableSuggestions: true,
+                      cursorColor: Theme.of(context).primaryColor,
                       decoration: InputDecoration(
-                          hintText: 'Send message...',
-                          border: InputBorder.none),
+                        hintText: 'Send message...',
+                        border: InputBorder.none,
+                      ),
                       onChanged: (value) {
                         setState(() {
                           _enteredMessage = value;

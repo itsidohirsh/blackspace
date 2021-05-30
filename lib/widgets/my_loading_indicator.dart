@@ -5,7 +5,7 @@ class MyLoadingIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(
-        color: Colors.black,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }

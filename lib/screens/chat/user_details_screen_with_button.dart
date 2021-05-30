@@ -1,6 +1,6 @@
-import '../../providers/database.dart';
 import 'package:flutter/material.dart';
 
+import '../../providers/database.dart';
 import '../dm/private_chat_screen.dart';
 
 class UserDetailsScreenWithButton extends StatefulWidget {
