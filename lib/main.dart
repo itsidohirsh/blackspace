@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Blackspace',
       theme: ThemeData(
         primaryColor: Colors.black,
-        accentColor: Colors.white,
+        accentColor: Colors.black,
         accentColorBrightness: Brightness.dark,
         buttonTheme: ButtonTheme.of(context).copyWith(
           buttonColor: Colors.black,
