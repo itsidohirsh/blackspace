@@ -1,6 +1,7 @@
 # Blackspace
+Blackspace, my 12th grade highschool cyber project ☄
 
-## This is my 12th grade final project in cyber and computer science
+## What is in here?
 In this repository you can find the code of my project.
 
- - You can find the project book, a documentation of the project [here](https://github.com/IdoHirsh0/Cyber-Project)
+ - You can find the documentation of the project [here](https://github.com/IdoHirsh0/Cyber-Project)
